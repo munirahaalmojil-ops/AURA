@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AURA Cybersecurity Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #0b1020;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1400px;
+            margin: auto;
+            padding: 30px 0 50px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 45px;
+            font-weight: bold;
+            letter-spacing: 7px;
+        }
+
+        .subtitle {
+            color: #9da8c5;
+            margin-top: 5px;
+        }
+
+        .live {
+            color: #65e89a;
+            font-weight: bold;
+        }
+
+        .live-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #65e89a;
+            margin-right: 7px;
+        }
+
+        h2 {
+            margin-top: 35px;
+            margin-bottom: 15px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .card {
+            background: #141c31;
+            border: 1px solid #293653;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .card-title {
+            color: #9da8c5;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .number {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .demo {
+            background: #141c31;
+            border: 1px solid #293653;
+            border-radius: 15px;
+            padding: 22px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 10px;
+            background: #30436e;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background: #40588e;
+        }
+
+        .danger {
+            background: #8b3043;
+        }
+
+        .green {
+            background: #286849;
+        }
+
+        .timeline {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            background: #11192c;
+            border: 1px solid #293653;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 140px;
+            text-align: center;
+            padding: 15px;
+            background: #1a2540;
+            border-radius: 10px;
+        }
+
+        .digital-twin {
+            background: #11192c;
+            border: 1px solid #293653;
+            border-radius: 18px;
+            padding: 25px;
+        }
+
+        .school {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .room {
+            padding: 22px;
+            min-height: 140px;
+            border-radius: 15px;
+            background: #17213a;
+            border: 2px solid #3b4b6d;
+        }
+
+        .room.normal {
+            border-color: #3b9b68;
+            background: #132a22;
+        }
+
+        .room.suspicious {
+            border-color: #e39a3b;
+            background: #382914;
+        }
+
+        .room.isolated {
+            border-color: #6c7280;
+            background: #272b33;
+        }
+
+        .room-name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .room-device {
+            color: #aab5d0;
+            margin-top: 8px;
+        }
+
+        .room-status {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .devices {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .device {
+            background: #141c31;
+            border: 1px solid #293653;
+            border-radius: 18px;
+            padding: 22px;
+        }
+
+        .device.suspicious {
+            border-color: #e39a3b;
+        }
+
+        .device.isolated {
+            border-color: #6c7280;
+        }
+
+        .device-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .device-name {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .status {
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .normal-status {
+            background: #183d2b;
+            color: #65e89a;
+        }
+
+        .suspicious-status {
+            background: #493117;
+            color: #ffc36b;
+        }
+
+        .isolated-status {
+            background: #30343c;
+            color: #c5c8d0;
+        }
+
+        .info {
+            color: #aab5d0;
+            line-height: 1.8;
+            margin-top: 18px;
+        }
+
+        .activity-title {
+            color: #9da8c5;
+            font-size: 14px;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        .bar {
+            height: 12px;
+            width: 100%;
+            background: #26314d;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            width: 50%;
+            background: #667eb8;
+            border-radius: 20px;
+        }
+
+        .history {
+            margin-top: 20px;
+        }
+
+        .history-bars {
+            height: 80px;
+            display: flex;
+            align-items: flex-end;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .history-bar {
+            width: 10px;
+            height: 30px;
+            background: #667eb8;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .analysis {
+            margin-top: 20px;
+            padding: 15px;
+            background: #101729;
+            border: 1px solid #293653;
+            border-radius: 12px;
+        }
+
+        .analysis-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .analysis-text {
+            color: #aab5d0;
+            line-height: 1.6;
+        }
+
+        .events {
+            background: #11192c;
+            border: 1px solid #293653;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .event {
+            padding: 16px 20px;
+            border-bottom: 1px solid #252f48;
+        }
+
+        .event:last-child {
+            border-bottom: none;
+        }
+
+        .event-time {
+            color: #71809f;
+            font-size: 12px;
+        }
+
+        .event-message {
+            margin-top: 5px;
+        }
+
+        .empty {
+            padding: 20px;
+            color: #71809f;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 45px;
+            color: #687593;
+            font-size: 13px;
+        }
+
+        @media (max-width: 900px) {
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .devices,
+            .school {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .timeline {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <div class="header">
+
+        <div>
+
+            <div class="logo">
+                AURA
+            </div>
+
+            <div class="subtitle">
+                AI-Powered Cybersecurity & Digital Twin
+            </div>
+
+        </div>
+
+
+        <div class="live">
+
+            <span class="live-dot"></span>
+
+            LIVE MONITORING
+
+        </div>
+
+    </div>
+
+
+
+    <!-- SECURITY OVERVIEW -->
+
+    <h2>
+        Security Overview
+    </h2>
+
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Devices Connected
+            </div>
+
+            <div class="number">
+                {{ analytics.total_devices }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Normal
+            </div>
+
+            <div class="number">
+                {{ analytics.normal_devices }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Suspicious
+            </div>
+
+            <div class="number">
+                {{ analytics.suspicious_devices }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Isolated
+            </div>
+
+            <div class="number">
+                {{ analytics.isolated_devices }}
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- THREAT ANALYTICS -->
+
+    <h2>
+        Live Threat Analytics
+    </h2>
+
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Threat Level
+            </div>
+
+            <div class="number">
+                {{ analytics.threat_level }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Total Events
+            </div>
+
+            <div class="number">
+                {{ analytics.total_events }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Average Anomaly Score
+            </div>
+
+            <div class="number">
+                {{ analytics.average_score }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Suspicious Devices
+            </div>
+
+            <div class="number">
+                {{ analytics.suspicious_devices }}
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- DEMO -->
+
+    <h2>
+        Judge Demonstration Mode
+    </h2>
+
+
+    <div class="demo">
+
+
+        <div>
+
+            Demonstrate how AURA detects abnormal
+            behavior and responds to a simulated
+            cybersecurity threat.
+
+        </div>
+
+
+        <div class="buttons">
+
+
+            <a
+                href="/demo/start"
+                class="button"
+            >
+                ▶ Start Demo
+            </a>
+
+
+            <a
+                href="/demo/attack"
+                class="button danger"
+            >
+                ⚡ Simulate Attack
+            </a>
+
+
+            <a
+                href="/demo/isolate"
+                class="button green"
+            >
+                🔒 Isolate Device
+            </a>
+
+
+            <a
+                href="/reset"
+                class="button"
+            >
+                ↻ Reset
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- RESPONSE TIMELINE -->
+
+    <h2>
+        Response Timeline
+    </h2>
+
+
+    <div class="timeline">
+
+
+        <div class="step">
+
+            🟢
+
+            <br><br>
+
+            Normal
+
+        </div>
+
+
+        <div class="step">
+
+            🔍
+
+            <br><br>
+
+            Anomaly Detected
+
+        </div>
+
+
+        <div class="step">
+
+            🚨
+
+            <br><br>
+
+            Threat Identified
+
+        </div>
+
+
+        <div class="step">
+
+            🛡️
+
+            <br><br>
+
+            Response Ready
+
+        </div>
+
+
+        <div class="step">
+
+            🔒
+
+            <br><br>
+
+            Isolated
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- DIGITAL TWIN -->
+
+    <h2>
+        Digital Twin
+    </h2>
+
+
+    <div class="digital-twin">
+
+
+        <p class="subtitle">
+
+            Digital representation of the
+            connected school environment.
+
+        </p>
+
+
+        <div class="school">
+
+
+            {% for device in devices %}
+
+
+            <div class="room
+                {% if device.status == 'Suspicious' %}
+                    suspicious
+                {% elif device.status == 'Isolated' %}
+                    isolated
+                {% else %}
+                    normal
+                {% endif %}
+            ">
+
+
+                <div class="room-name">
+
+                    {{ device.room }}
+
+                </div>
+
+
+                <div class="room-device">
+
+                    {{ device.name }}
+
+                </div>
+
+
+                <div class="room-status">
+
+
+                    {% if device.status == 'Suspicious' %}
+
+                        🚨 Suspicious Activity
+
+                    {% elif device.status == 'Isolated' %}
+
+                        🔒 Device Isolated
+
+                    {% else %}
+
+                        🟢 Normal
+
+                    {% endif %}
+
+
+                </div>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- NETWORK MONITORING -->
+
+    <h2>
+        Network Monitoring
+    </h2>
+
+
+    <div class="devices">
+
+
+        {% for device in devices %}
+
+
+        <div class="device
+            {% if device.status == 'Suspicious' %}
+                suspicious
+            {% elif device.status == 'Isolated' %}
+                isolated
+            {% endif %}
+        ">
+
+
+            <div class="device-header">
+
+
+                <div class="device-name">
+
+                    {{ device.name }}
+
+                </div>
+
+
+                {% if device.status == 'Suspicious' %}
+
+
+                    <span class="status suspicious-status">
+
+                        SUSPICIOUS
+
+                    </span>
+
+
+                {% elif device.status == 'Isolated' %}
+
+
+                    <span class="status isolated-status">
+
+                        ISOLATED
+
+                    </span>
+
+
+                {% else %}
+
+
+                    <span class="status normal-status">
+
+                        NORMAL
+
+                    </span>
+
+
+                {% endif %}
+
+
+            </div>
+
+
+
+            <div class="info">
+
+
+                <div>
+
+                    📍 Room:
+                    {{ device.room }}
+
+                </div>
+
+
+                <div>
+
+                    📊 Activity:
+                    {{ device.activity }}
+
+                </div>
+
+
+                <div>
+
+                    🧠 Baseline:
+                    {{ device.baseline }}
+
+                </div>
+
+
+                <div>
+
+                    🎯 Anomaly Score:
+                    {{ device.anomaly_score }}
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ACTIVITY LEVEL -->
+
+            <div class="activity-title">
+
+                Activity Level
+
+            </div>
+
+
+            <div class="bar">
+
+
+                <div class="bar-fill"></div>
+
+
+            </div>
+
+
+
+            <!-- HISTORY -->
+
+            <div class="history">
+
+
+                <strong>
+
+                    📈 Activity History
+
+                </strong>
+
+
+                <div class="history-bars">
+
+
+                    {% for value in device.history %}
+
+
+                    <div class="history-bar"></div>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- AURA ANALYSIS -->
+
+            <div class="analysis">
+
+
+                <div class="analysis-title">
+
+                    AURA Analysis
+
+                </div>
+
+
+                {% if device.status == 'Suspicious' %}
+
+
+                <div class="analysis-text">
+
+
+                    <strong>
+                        Threat Type:
+                    </strong>
+
+                    {{ device.threat_type }}
+
+
+                    <br><br>
+
+
+                    <strong>
+                        Reason:
+                    </strong>
+
+                    {{ device.reason }}
+
+
+                    <br><br>
+
+
+                    <strong>
+                        Recommended Response:
+                    </strong>
+
+                    Isolate the device
+                    from the network.
+
+
+                </div>
+
+
+                {% elif device.status == 'Isolated' %}
+
+
+                <div class="analysis-text">
+
+
+                    🔒 Device isolated by AURA.
+
+
+                    <br><br>
+
+
+                    AURA simulated a network-level
+                    response to prevent further
+                    abnormal activity.
+
+
+                </div>
+
+
+                {% else %}
+
+
+                <div class="analysis-text">
+
+
+                    🟢 Device behavior is within
+                    the normal activity range.
+
+
+                </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+
+
+            <!-- ISOLATE -->
+
+            {% if device.status == 'Suspicious' %}
+
+
+            <div style="margin-top:15px;">
+
+
+                <a
+                    href="/isolate/{{ device.id }}"
+                    class="button danger"
+                >
+
+                    🔒 Isolate Device
+
+                </a>
+
+
+            </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+
+    <!-- EVENT LOG -->
+
+    <h2>
+        Security Event Log
+    </h2>
+
+
+    <div class="events">
+
+
+        {% if events %}
+
+
+            {% for event in events|reverse %}
+
+
+            <div class="event">
+
+
+                <div class="event-time">
+
+                    {{ event.time }}
+
+                </div>
+
+
+                <div class="event-message">
+
+
+                    {% if event.type == 'attack' %}
+
+                        🚨 {{ event.message }}
+
+                    {% elif event.type == 'isolation' %}
+
+                        🔒 {{ event.message }}
+
+                    {% else %}
+
+                        🔍 {{ event.message }}
+
+                    {% endif %}
+
+
+                </div>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+            <div class="empty">
+
+                No security events detected yet.
+
+            </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+
+    <div class="footer">
+
+        AURA — AI-Powered Cybersecurity &
+        Digital Twin Prototype
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>
